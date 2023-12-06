@@ -1,12 +1,13 @@
 # Create and Apply S3 Bucket Policies with Conditions to Restrict Specific Bucket Permissions
 
-## You will create and test two different bucket policies:
+## Project Objectives:
 
-1.  Configure a bucket policy that will restrict what a user can do within an S3 bucket based upon their IP address
+1.  Configure a bucket policy that will restrict what a user can do within an S3 bucket based upon their IP address.
 
-2.  Configure a bucket policy to only allow the upload of objects to a bucket when server side encryption has been configured for the object
+2.  Configure a bucket policy to only allow the upload of objects to a bucket when server side encryption has been configured for the object.
 
 ## Step 1: Login to the AWS console.
+login to your AWS account with your credentials.
 
 ## Step 2: Creating an Amazon S3 bucket
 1. In the AWS Management Console search bar, enter S3, and click the S3 result under Services
@@ -27,58 +28,56 @@ In this step, we created an Amazon S3 bucket.
 From here, you can type in a JSON based policy directly, or use AWS Policy generator.
 
 3. At the top, click Policy generator.
-4. Fill out Step 1: Select Policy Type as follows:
-    ```
-     Select Type of Policy: Select S3 Bucket Policy
-    ```
+4. Fill out Step 1: Select Policy Type as follows:   
+    *  Select Type of Policy: Select S3 Bucket Policy
+    
 5. Under Step 2: Add Statement(s), enter and select the following:
-    ```
-     Effect: Select the Deny radio button
-     Principal: Enter *
-     Actions: Check PutObject 
-     ARN: You will enter your bucket ARN on Edit bucket policy page
-    ```
+    
+    * Effect: Select the Deny radio button
+    * Principal: Enter *
+    * Actions: Check PutObject 
+    * ARN: You will enter your bucket ARN on Edit bucket policy page
+    
 6. Still within Step 2: Add Statement(s), click Add Conditions (Optional).fill out follows:
-    ```
-     Condition: Select NotIpAddress
-     Key: Select aws:SourceIp
-     Value: Enter 1.2.3.4 
-    ```
+    
+    * Condition: Select NotIpAddress
+    * Key: Select aws:SourceIp
+    * Value: Enter 1.2.3.4 
+    
 7. Click  Add Condition button when ready to proceed.
 
 8. Click Add Statement, and then Generate Policy when ready to proceed.
 
 9. Select and copy the Policy JSON Document generated for you.
 
-10. Return to your browser tab with the Bucket Policy editor open and paste the JSON into the Policy editor, copy and paste the Bucket ARN into Resource, and append /*
-    ```
+10. Return to your browser tab with the Bucket Policy editor open and paste the JSON into the Policy editor, copy and paste the Bucket ARN into Resource, and append /*.
+    
     * Important: Make sure the ARN on the Resource line matches the name of the Amazon S3 bucket you created earlier.
 
     * Important: Ensure you add the slash and the asterisk at the end of the ARN to have the policy apply to objects in the bucket.
-    ```
+    
 
 11. To save the policy, scroll to the bottom and click Save changes.
-```
-Recall that the condition within your policy specifies actions on your S3 bucket from anyone other than Source IP of 1.2.3.4 will be denied. (Clearly your local host IP address is not 1.2.3.4)
-```
 
-Next, you will test your bucket policy.
+Recall that the condition within your policy specifies actions on your S3 bucket from anyone other than Source IP of 1.2.3.4 will be denied. (Clearly your local host IP address is not 1.2.3.4)
+
+
+### Test your bucket policy:
 
 12. Scroll to the top, click the Objects tab, and click Create folder.
 
 13. Enter a folder name and then at the bottom, click Create folder. 
-```
+
 Because your source IP address is not 1.2.3.4 you will receive an error
 
 
-```
 14. Click Cancel to exit the form, and then click Upload, and Add files.(Select a few files from your local file system)
 
 15. Scroll to the bottom and click Upload.
-```
+
 Once again, the operation (an upload in this example) failed, as you do not have permission to perform any actions because your IP address does not match the bucket policies condition (source IP 1.2.3.4).
 
-```
+
 16. To close the Upload form, click Close.
 
 In this Step we learned how to use the Amazon Policy Generator to generate the JSON to create a S3 bucket policy. The policy denied all S3 actions from any source where the IP address was not 1.2.3.4. 
@@ -93,26 +92,25 @@ In this Step we learned how to use the Amazon Policy Generator to generate the J
 
 4. To start generating a new policy, click Policy generator:
 
-5. Fill out Step 1: Select Policy Type as follows:
-    ```
+5. Fill out Step 1: Select Policy Type as follows:   
     - Select Type of Policy: S3 Bucket Policy
-    ```
+    
 
-    6.Fill out Step 2: Add Statement(s) as follows:
-    ```    
-     Effect: Select the Deny radio button
-     Principal: Enter *
-     Actions: Select PutObject
-     ARN: You will enter your bucket ARN  on Edit bucket policy page
-    ```
+6. Fill out Step 2: Add Statement(s) as follows:
+      
+     * Effect: Select the Deny radio button
+     * Principal: Enter *
+     * Actions: Select PutObject
+     * ARN: You will enter your bucket ARN  on Edit bucket policy page
+    
 
 7. Still within Step 2: Add Statement(s), click Add Conditions (Optional) and fill out as follows:
-    ```
-    Condition: Select StringNotEquals
-    Key: Select s3:x-amz-server-side-encryption
-    Value: Enter AES256
+    
+    * Condition: Select StringNotEquals
+    * Key: Select s3:x-amz-server-side-encryption
+    * Value: Enter AES256
 
-    ```
+    
 Conditions allow you to define a greater granularity to your policy to only execute under certain conditions and keys.
 
 8. Click  Add Condition button when ready to proceed.
@@ -127,18 +125,17 @@ Conditions allow you to define a greater granularity to your policy to only exec
 12. Return to your browser tab with the Bucket Policy editor open and paste the JSON into the Policy editor, copy and paste the Bucket ARN into Resource, and append /*.
 
 13. To save your policy, scroll to the bottom and click Save changes.
-```
+
 Your S3 bucket now has a bucket policy applied. Recall that the condition within your policy specifies any files added to your bucket without encryption should be denied. 
 
-```
-Next, you will test the bucket policy by attempting an upload of a file without encryption, then uploading a file with SSE encryption.
+### Test the bucket policy by attempting an upload of a file without encryption:
 
 14. Click the Objects tab at the top, click Upload, and then Add files.
 
 15. Select (or drag and drop) a file or two from your local file system, then click Upload at the bottom to upload the selected files.
 You will see a notification that the upload has failed.  
 
-Next you will upload a file with encryption enabled to further test the S3 bucket policy.
+### Upload a file with encryption enabled to further test the S3 bucket policy:
 
 16. Click Close, Upload, then Add Files, and select a local file to upload.
 
