@@ -135,7 +135,7 @@ Your S3 bucket now has a bucket policy applied. Recall that the condition within
 15. Select (or drag and drop) a file or two from your local file system, then click Upload at the bottom to upload the selected files.
 You will see a notification that the upload has failed.  
 
-### Upload a file with encryption enabled to further test the S3 bucket policy:
+### Test the bucket policy by attempting an upload of a file with encryption::
 
 16. Click Close, Upload, then Add Files, and select a local file to upload.
 
